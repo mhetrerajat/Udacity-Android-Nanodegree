@@ -8,7 +8,7 @@
 #### Other Usage :
 - GridView
 - Fragments
-- SharedPreference
+- SharedPreferences
 - Toolbar
 - ScrollView
 - Intent 
