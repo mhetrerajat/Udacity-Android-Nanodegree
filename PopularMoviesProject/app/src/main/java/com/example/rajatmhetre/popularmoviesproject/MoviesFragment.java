@@ -103,6 +103,10 @@ class CustomItem {
 
 }
 
+class ViewHolder{
+    ImageView movieGridPoster;
+}
+
 
 //MovieItemAdapter - connect data to view.
 class MovieItemAdapter extends BaseAdapter{
@@ -110,6 +114,7 @@ class MovieItemAdapter extends BaseAdapter{
     private Context obContext;
     private List<MovieItem> movieItemList = null;
     private LayoutInflater inflater;
+    private String moviePosterURL;
 
     public MovieItemAdapter(Context c){
         inflater = LayoutInflater.from(c);
@@ -140,29 +145,34 @@ class MovieItemAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView moviePoster;
+        //ImageView moviePoster;
+        ViewHolder holder;
 
         if(convertView == null){
-            convertView = inflater.inflate(R.layout.movie_grid_item,parent,false);
-            convertView.setTag(R.id.movieGridPoster, convertView.findViewById(R.id.movieGridPoster));
+            convertView = inflater.inflate(R.layout.movie_grid_item, parent, false);
 
-            moviePoster = (ImageView) convertView.getTag(R.id.movieGridPoster);
+            holder = new ViewHolder();
+            holder.movieGridPoster = (ImageView) convertView.findViewById(R.id.movieGridPoster);
 
-            MovieItem currentMovieItem = this.getItem(position);
-            String moviePosterPath = currentMovieItem.getPosterPath().replaceFirst("/", "");
-
-            Uri.Builder moviePosterURI = new Uri.Builder();
-
-            String moviePosterURL = moviePosterURI.scheme("http").authority("image.tmdb.org").appendPath("t").appendPath("p").appendPath("w185").appendPath(moviePosterPath).build().toString();
-            moviePosterURI.clearQuery();
-            Picasso.with(obContext).load(moviePosterURL).into(moviePoster);
-
+            convertView.setTag(holder);
 
         }else{
-            moviePoster = (ImageView) convertView;
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        return moviePoster;
+        //moviePoster = (ImageView) convertView.getTag(R.id.movieGridPoster);
+
+        MovieItem currentMovieItem = this.getItem(position);
+        String moviePosterPath = currentMovieItem.getPosterPath().replaceFirst("/", "");
+
+        Uri.Builder moviePosterURI = new Uri.Builder();
+
+        moviePosterURL = moviePosterURI.scheme("http").authority("image.tmdb.org").appendPath("t").appendPath("p").appendPath("w185").appendPath(moviePosterPath).build().toString();
+        moviePosterURI.clearQuery();
+
+        Picasso.with(obContext).load(moviePosterURL).into(holder.movieGridPoster);
+
+        return convertView;
 
 
     }

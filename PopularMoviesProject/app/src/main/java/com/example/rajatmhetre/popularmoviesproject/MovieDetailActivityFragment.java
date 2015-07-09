@@ -41,7 +41,7 @@ public class MovieDetailActivityFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         Intent movieIntent = getActivity().getIntent();
-        MovieItem movieItem = (MovieItem) movieIntent.getSerializableExtra("movieDetails");
+        MovieItem movieItem = (MovieItem) movieIntent.getParcelableExtra("movieDetails");
 
         Uri.Builder moviePosterURI = new Uri.Builder();
 

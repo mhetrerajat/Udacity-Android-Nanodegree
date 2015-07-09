@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,8 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
-
-    private final String LOG_TAG = FetchMovieData.class.getSimpleName();
 
     private final String TAG_RESULTS = "results";
     private final String TAG_BACKDROP_PATH = "backdrop_path";
@@ -114,7 +113,7 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
 
 
         }catch(Exception e){
-            Log.e(LOG_TAG,"Oops! Something went wrong : " + e.getLocalizedMessage());
+            Toast.makeText(context,"Oops! Something went wrong : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }finally{
             if(urlConnection != null){
                 urlConnection.disconnect();
@@ -124,7 +123,7 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
                 try{
                     bufferedReader.close();
                 }catch(Exception e){
-                    Log.e(LOG_TAG,"Oops! Unable to close the reader : " + e.getLocalizedMessage());
+                    Toast.makeText(context,"Oops! Unable to close the reader : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }
