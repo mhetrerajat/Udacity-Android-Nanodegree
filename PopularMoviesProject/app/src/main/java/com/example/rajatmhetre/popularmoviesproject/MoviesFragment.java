@@ -1,5 +1,6 @@
 package com.example.rajatmhetre.popularmoviesproject;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -28,50 +29,102 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+class FetchMovieTaskListener implements AsyncResponse
+{
+    public static ArrayList<MovieItem> movieList = new ArrayList<MovieItem>();
+
+    FetchMovieTaskListener(ArrayList<MovieItem> movieList) {
+        this.movieList = movieList;
+    }
+
+    @Override
+    public void getMovieList(ArrayList<MovieItem> movieListObject) {
+        movieList = movieListObject;
+    }
+}
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class MoviesFragment extends Fragment {
+public class MoviesFragment extends Fragment{
 
     private MovieItemAdapter movieAdpater;
     private MovieItem currentMovieItem;
     private GridView movieGrid;
     private ProgressBar progressBar;
     private SharedPreferences.OnSharedPreferenceChangeListener prefListener;
-
+    public ArrayList<MovieItem> movieList = new ArrayList<MovieItem>();
 
     public MoviesFragment() {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("FRAGMENT_CREATE", "Create !");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("MovieList", movieList);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.movies_fragment, container, false);
 
+        setRetainInstance(true);
+
         movieGrid = (GridView) rootView.findViewById(R.id.movieGrid);
+        if(getResources().getConfiguration().orientation == 1){
+            movieGrid.setNumColumns(2);
+        }
+        else if(getResources().getConfiguration().orientation == 2){
+            movieGrid.setNumColumns(3);
+        }
+
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-
-                FetchMovieData movieData = new FetchMovieData(getActivity().getApplicationContext(),movieGrid,progressBar);
-                movieData.execute();
-
+                    FetchMovieData movieData;
+                    movieData = new FetchMovieData(getActivity().getApplicationContext(), new AsyncResponse() {
+                        @Override
+                        public void getMovieList(ArrayList<MovieItem> movieListObject) {
+                            movieList = movieListObject;
+                            movieGrid.setAdapter(new MovieItemAdapter(getActivity(), movieList));
+                        }
+                    });
+                    movieData.execute();
             }
         };
         prefs.registerOnSharedPreferenceChangeListener(prefListener);
 
-        FetchMovieData movieData = new FetchMovieData(getActivity().getApplicationContext(),movieGrid,progressBar);
-        movieData.execute();
+        if(savedInstanceState == null) {
+            FetchMovieData movieData;
+            movieData = new FetchMovieData(getActivity().getApplicationContext(), new AsyncResponse() {
+                @Override
+                public void getMovieList(ArrayList<MovieItem> movieListObject) {
+                    movieList = movieListObject;
+                    movieGrid.setAdapter(new MovieItemAdapter(getActivity(), movieList));
+                }
+            });
+            movieData.execute();
+        }
+        else {
+            movieList = savedInstanceState.getParcelableArrayList("MovieList");
+            movieGrid.setAdapter(new MovieItemAdapter(getActivity(), movieList));
+        }
 
-
+        progressBar.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -81,27 +134,25 @@ public class MoviesFragment extends Fragment {
         movieGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getActivity(),"You just clicked" + position,Toast.LENGTH_SHORT).show();
-                //movieAdpater = new MovieItemAdapter(getActivity().getApplicationContext());
+
                 currentMovieItem = (MovieItem) parent.getItemAtPosition(position);
 
                 Intent movieDetailIntent = new Intent(getActivity(), MovieDetailActivity.class);
-                movieDetailIntent.putExtra("movieDetails",currentMovieItem);
+                movieDetailIntent.putExtra("movieDetails", currentMovieItem);
                 getActivity().startActivity(movieDetailIntent);
             }
         });
     }
-}
 
-//CustomItem - class used in case of more than one type of view is used.
-class CustomItem {
-    final int drawableId;
 
-    public CustomItem(int drawableId) {
-        this.drawableId = drawableId;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("FRAGMENT_DESTROY","Destroy!");
     }
 
 }
+
 
 class ViewHolder{
     ImageView movieGridPoster;

@@ -1,21 +1,28 @@
 package com.example.rajatmhetre.popularmoviesproject;
 
+import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     private Toolbar toolbar;
     private ProgressBar progressBar;
+    private ArrayList<MovieItem> movieList = new ArrayList<MovieItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +32,27 @@ public class MainActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
+
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 // Handle the menu item
                 switch (item.getItemId()) {
                     case R.id.action_refresh: {
-                        GridView movieGrid = (GridView) findViewById(R.id.movieGrid);
+                        final GridView movieGrid = (GridView) findViewById(R.id.movieGrid);
                         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-                        FetchMovieData movieData = new FetchMovieData(getApplicationContext(),movieGrid,progressBar);
-                        movieData.execute();
+
+                            FetchMovieData movieData;
+                            movieData = new FetchMovieData(getApplicationContext(), new AsyncResponse() {
+                                @Override
+                                public void getMovieList(ArrayList<MovieItem> movieListObject) {
+                                    movieList = movieListObject;
+                                    movieGrid.setAdapter(new MovieItemAdapter(getApplicationContext(), movieList));
+                                }
+                            });
+                            movieData.execute();
+
+
                         break;
                     }
                     case R.id.action_settings: {
@@ -69,4 +87,5 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

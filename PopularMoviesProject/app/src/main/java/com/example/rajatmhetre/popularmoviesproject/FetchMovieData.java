@@ -21,8 +21,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
+
+    private final String LOG_TAG = getClass().getSimpleName();
 
     private final String TAG_RESULTS = "results";
     private final String TAG_BACKDROP_PATH = "backdrop_path";
@@ -35,23 +39,26 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
     private final String TAG_VOTE_COUNT = "vote_count";
 
     private Context context;
-    private GridView movieGrid;
-    private ArrayList<MovieItem> movieDataList;
-    private ProgressBar progressBar;
+    //private GridView movieGrid;
+    public static ArrayList<MovieItem> movieDataList;
+    //private ProgressBar progressBar;
     private String sortByPreference;
 
-    public FetchMovieData(Context context,GridView movieGrid,ProgressBar progressBar) {
+    public AsyncResponse delegate = null;
+
+    public FetchMovieData(Context context, AsyncResponse delegate) {
         this.context = context;
-        this.movieGrid = movieGrid;
-        this.progressBar = progressBar;
+        this.delegate = delegate;
+        //this.movieGrid = movieGrid;
+        //this.progressBar = progressBar;
     }
+
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar.setVisibility(View.VISIBLE);
-        movieGrid.setClickable(false);
-
+        //movieGrid.setClickable(false);
+        //progressBar.setVisibility(View.VISIBLE);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         sortByPreference = preferences.getString("sort_movies","popularity.desc");
     }
@@ -113,7 +120,7 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
 
 
         }catch(Exception e){
-            Toast.makeText(context,"Oops! Something went wrong : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(LOG_TAG, "Oops! Something went wrong : " + e.getLocalizedMessage());
         }finally{
             if(urlConnection != null){
                 urlConnection.disconnect();
@@ -123,12 +130,14 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
                 try{
                     bufferedReader.close();
                 }catch(Exception e){
-                    Toast.makeText(context,"Oops! Unable to close the reader : " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(LOG_TAG, "Oops! Unable to close the reader : " + e.getLocalizedMessage());
                 }
             }
         }
+
         return movieDataList;
     }
+
 
     @Override
     protected void onProgressUpdate(Void... values) {
@@ -138,15 +147,14 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
+        Toast.makeText(context,"Oops! Something made to cancel downloading task.",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPostExecute(ArrayList<MovieItem> movieItems) {
         super.onPostExecute(movieItems);
-
-        movieGrid.setAdapter(new MovieItemAdapter(context, movieDataList));
-        progressBar.setVisibility(View.GONE);
-        movieGrid.setClickable(true);
-
+        Log.e("MOVIE_DATA_LIST", String.valueOf(movieDataList.size()));
+        delegate.getMovieList(movieDataList);
     }
+
 }
