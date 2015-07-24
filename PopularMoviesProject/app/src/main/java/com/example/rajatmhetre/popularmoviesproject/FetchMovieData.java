@@ -37,6 +37,7 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
     private final String TAG_POPULARITY = "popularity";
     private final String TAG_VOTE_AVERAGE = "vote_average";
     private final String TAG_VOTE_COUNT = "vote_count";
+    private final String API_KEY = "xxxxxx";
 
     private Context context;
     //private GridView movieGrid;
@@ -78,7 +79,7 @@ public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieItem>> {
         movieDataList = new ArrayList<MovieItem>();
 
         Uri.Builder dataURI = new Uri.Builder();
-        dataURI.scheme("http").authority("api.themoviedb.org").appendPath("3").appendPath("discover").appendPath("movie").appendQueryParameter("sort_by",sortByPreference).appendQueryParameter("api_key", "b77680eb32a5cba17f823fbb6f8c362f");
+        dataURI.scheme("http").authority("api.themoviedb.org").appendPath("3").appendPath("discover").appendPath("movie").appendQueryParameter("sort_by",sortByPreference).appendQueryParameter("api_key", API_KEY);
 
         try{
             URL dataURL = new URL(dataURI.build().toString());
