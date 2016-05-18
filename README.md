@@ -1,4 +1,4 @@
-# Android-Projects
+# Udacity-Android-Nanodegree
 
 ## PopularMoviesProject :
 #### Support Libraries Used :
