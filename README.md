@@ -27,3 +27,11 @@
 ###### Wear
 ![Wear](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Sunshine/Wear.png)
 
+## Alexandria
+#### Snapshots
+![SideBar](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Alexandria/SideBar.png)
+![Doscan](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Alexandria/DoScan.png)
+![Scanner](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Alexandria/Scanner.png)
+![ScannedBook](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Alexandria/ScannedBook.png)
+![Home](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Alexandria/Home.png)
+![Detail](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Alexandria/Detail.png)
