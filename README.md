@@ -11,3 +11,14 @@
 ![Favorites](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/PopularMoviesApp/Favorites.png)
 ![Detail](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/PopularMoviesApp/Detail.png)
 ![Trailer&Review](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/PopularMoviesApp/Trailer%26Review.png)
+
+## XYZReader
+#### Snapshots
+![Home](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/xyzreader/Home.png)
+![Detail](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/xyzreader/Detail.png)
+
+## Sunshine
+#### Snapshots
+###### Mobile
+!
+
