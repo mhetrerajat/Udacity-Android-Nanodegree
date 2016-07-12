@@ -25,5 +25,5 @@
 ![Settings](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Sunshine/Settings.png)
 ![Notification](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Sunshine/Notification.png)
 ###### Wear
-[Wear](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Sunshine/Wear.png)
+![Wear](https://github.com/mhetrerajat/Udacity-Android-Nanodegree/blob/master/Photos/Sunshine/Wear.png)
 
