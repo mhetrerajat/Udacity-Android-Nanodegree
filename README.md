@@ -13,6 +13,8 @@ Overview
 
 Discover popular and recent movies & mark them as “Favorite".
 
+[View Code](./PopularMoviesProject/)
+
 ### Technical Details
 
 - Built using SQLite as a data local store
@@ -51,6 +53,8 @@ Features
 
 RSS Feed Reader
 
+[View Code](./xyzreader/)
+
 ### Technical Details
 
 - Picasso is used for image caching
@@ -69,6 +73,8 @@ RSS Feed Reader
 ## Sunshine
 
 Weather app designed for android mobiles and android wear. Sends daily push notifications about the weather of the preferred location and weekly weather reports.
+
+[View Code](./sunshine/)
 
 ### Photos
 
@@ -96,6 +102,8 @@ Weather app designed for android mobiles and android wear. Sends daily push noti
 ## Alexandria
 
 App which scans the barcode of a book and gives detailed information about that book
+
+[View Code](./alexandria/)
 
 ### Photos
 
